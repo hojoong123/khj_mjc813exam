@@ -71,3 +71,5 @@ console.log(reverse_string);
  }
  let S_x = new Total_Score();
  S_x.S_input();
+
+ //JSON.parse()

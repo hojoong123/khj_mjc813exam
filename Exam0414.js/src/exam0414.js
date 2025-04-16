@@ -43,3 +43,31 @@ one_string = string1.split("");
 reverse_split = one_string.reverse();
 reverse_string = reverse_split.join("");
 console.log(reverse_string);
+
+ class Height {
+    h_in = 0;
+    h_input() {
+        this.h_in = prompt("키를 입력하세요 : ")
+        if (this.h_in >= 150) {
+            console.log("YES")
+        }
+        else {
+            console.log("NO")
+        }
+    }
+ }
+ let h_x = new Height();
+ h_x.h_input();
+
+ class Total_Score {
+    input_Score = [0, 0, 0];
+    output_Score = 0;
+    S_input() {
+        const input = prompt("입력 : ");
+        this.input_Score = input.split(" ").map(Number);
+        this.output_Score = (this.input_Score[0]+this.input_Score[1]+this.input_Score[2])/3
+        console.log("출력 : ", this.output_Score)
+    }
+ }
+ let S_x = new Total_Score();
+ S_x.S_input();

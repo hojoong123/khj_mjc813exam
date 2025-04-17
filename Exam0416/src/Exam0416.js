@@ -27,42 +27,56 @@
  x_circle.r_input();
 
  //문제 26
- class Space {
-    p = ['수성', '금성', '지구', '화성', '목성', '토성', '천왕성', '해왕성']
-    p_i = [0]
-    p_o = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
-    p_input() {
-        const input = prompt("행성을 한글로 입력 : ");
-        this.p_i = input;
-        if (this.p_i == this.p[0]) {
-            console.log(this.p_o[0])
+  class Space {
+     p = ['수성', '금성', '지구', '화성', '목성', '토성', '천왕성', '해왕성']
+     p_i = [0]
+     p_o = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
+     p_input() {
+         const input = prompt("행성을 한글로 입력 : ");
+         this.p_i = input;
+         if (this.p_i == this.p[0]) {
+             console.log(this.p_o[0])
+         }
+         else if (this.p_i == this.p[1]) {
+         console.log(this.p_o[1])
+         }
+         else if (this.p_i == this.p[2]) {
+         console.log(this.p_o[2])
+         }
+         else if (this.p_i == this.p[3]) {
+         console.log(this.p_o[3])
+         }
+         else if (this.p_i == this.p[4]) {
+         console.log(this.p_o[4])
+         }
+         else if (this.p_i == this.p[5]) {
+         console.log(this.p_o[5])
+         }
+         else if (this.p_i == this.p[6]) {
+         console.log(this.p_o[6])
+         }
+         else if (this.p_i == this.p[7]) {
+         console.log(this.p_o[7])
+         }
+         else {
+             console.log("올바른 입력이 아닙니다.")
+         }
         }
-        else if (this.p_i == this.p[1]) {
-        console.log(this.p_o[1])
-        }
-        else if (this.p_i == this.p[2]) {
-        console.log(this.p_o[2])
-        }
-        else if (this.p_i == this.p[3]) {
-        console.log(this.p_o[3])
-        }
-        else if (this.p_i == this.p[4]) {
-        console.log(this.p_o[4])
-        }
-        else if (this.p_i == this.p[5]) {
-        console.log(this.p_o[5])
-        }
-        else if (this.p_i == this.p[6]) {
-        console.log(this.p_o[6])
-        }
-        else if (this.p_i == this.p[7]) {
-        console.log(this.p_o[7])
-        }
-        else {
-            console.log("올바른 입력이 아닙니다.")
-        }
+     }
+  let x_p = new Space();
+  x_p.p_input();
+
+  //문제 26
+    class Space1 {
+       p = ['수성', '금성', '지구', '화성', '목성', '토성', '천왕성', '해왕성']
+       p_i = [0]
+       p_o = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
+       p_input1() {
+           const input = prompt("행성을 한글로 입력하세요:");
+           const index = this.p.indexOf(input);
+           console.log(index !== -1 ? this.p_o[index] : "올바른 입력이 아닙니다.");
+         }
        }
-    }
- let x_p = new Space();
- x_p.p_input();
+    let x_p = new Space1();
+    x_p.p_input1();
 

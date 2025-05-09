@@ -82,4 +82,39 @@ public class MyMathMathic {
         return Integer.parseInt(a);
     }
 
+    public static int array(int[] array) {
+        int sum = 0;
+        for (int num : array) {
+            sum += num;
+        }
+        return sum / array.length;
+    }
+
+    public int sumArray(int[] arr) {
+        int sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+        }
+        return sum;
+    }
+
+    public int sumMultiples(int[] array, int n) {
+        int sum = 0;
+        for (int num : array) {
+            if (num % n == 0) {
+                sum += num;
+            }
+        }
+        return sum;
+    }
+
+    public int java_4_3() {
+        int a = 0;
+        for(int i = 1;i<=100;i++) {
+            if(i % 3 == 0) {
+                a += i;
+            }
+        }
+        return a;
+    }
 }

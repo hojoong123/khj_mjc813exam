@@ -1,5 +1,8 @@
 package com.mjc.studyjava;
 
+import java.math.BigDecimal;
+import java.util.Random;
+
 public class MyMathMathic {
 
     public int add(int a, int b) {
@@ -117,4 +120,39 @@ public class MyMathMathic {
         }
         return a;
     }
+
+    public BigDecimal getBigDecimal(int n, int s) {
+        String decimalString = n + "." + s;
+        return new BigDecimal(decimalString);
+    }
+
+    public Integer[] getIntegerArray(int[] array) {
+        Integer[] result = new Integer[array.length];
+        for (int i = 0; i < array.length; i++) {
+            result[i] = array[i];
+        }
+        return result;
+    }
+
+    public int[] makeRandomIntArray(int n) {
+        int[] result = new int[n];
+        Random rand = new Random();
+        for (int i = 0; i < n; i++) {
+            result[i] = rand.nextInt();
+        }
+        return result;
+    }
+
+    public String makeEncryptString(String text, int n) {
+        String charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random rand = new Random();
+        int length = n * text.length();
+        char[] result = new char[length];
+
+        for (int i = 0; i < length+1; i++) {
+
+        }
+
+    }
+
 }

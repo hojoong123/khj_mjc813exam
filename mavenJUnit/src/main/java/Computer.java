@@ -19,6 +19,51 @@ public class Computer {
     private int storageSize; // in GB
     private GraphicCard graphicCard;
 
+    public Computer() {
+        this.name = "Computer";
+        this.cpu = null;
+        this.ramSize = null;
+        this.storageType = null;
+        this.storageSize = null;
+        this.graphicCard = null;
+    }
+
+    public Computer(String name) {
+        this.name = name;
+        this.cpu = null;
+        this.ramSize = null;
+        this.storageType = null;
+        this.storageSize = null;
+        this.graphicCard = null;
+    }
+
+    public Computer(String name, CPU cpu) {
+        this.name = name;
+        this.cpu = cpu;
+        this.ramSize = null;
+        this.storageType = null;
+        this.storageSize = null;
+        this.graphicCard = null;
+    }
+
+    public Computer(String name, CPU cpu, int ramSize) {
+        this.name = name;
+        this.cpu = cpu;
+        this.ramSize = ramSize;
+        this.storageType = null;
+        this.storageSize = null;
+        this.graphicCard = null;
+    }
+
+    public Computer(String name, CPU cpu, int ramSize, StorageType storageType, int storageSize) {
+        this.name = name;
+        this.cpu = cpu;
+        this.ramSize = ramSize;
+        this.storageType = storageType;
+        this.storageSize = storageSize;
+        this.graphicCard = null;
+    }
+
     public Computer(String name, CPU cpu, int ramSize, StorageType storageType, int storageSize, GraphicCard graphicCard) {
         this.name = name;
         this.cpu = cpu;

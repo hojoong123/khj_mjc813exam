@@ -10,5 +10,6 @@ public class Member {
         this.name = name;
         this.id = id;
     }
+}
 
 

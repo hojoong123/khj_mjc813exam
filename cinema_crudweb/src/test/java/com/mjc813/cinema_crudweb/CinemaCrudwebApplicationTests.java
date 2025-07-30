@@ -1,4 +1,4 @@
-package org.mjc813.cinema_crudweb;
+package com.mjc813.cinema_crudweb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

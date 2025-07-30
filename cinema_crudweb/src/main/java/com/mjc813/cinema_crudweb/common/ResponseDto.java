@@ -1,4 +1,4 @@
-package org.mjc813.cinema_crudweb.common;
+package com.mjc813.cinema_crudweb.common;
 
 import lombok.*;
 

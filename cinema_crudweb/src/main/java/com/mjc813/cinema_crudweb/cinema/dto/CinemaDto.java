@@ -1,4 +1,4 @@
-package org.mjc813.cinema_crudweb.cinema.dto;
+package com.mjc813.cinema_crudweb.cinema.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

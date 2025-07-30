@@ -1,0 +1,13 @@
+package org.mjc813.cinema_crudweb;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class CinemaCrudwebApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}

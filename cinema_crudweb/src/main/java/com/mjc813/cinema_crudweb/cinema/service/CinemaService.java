@@ -12,4 +12,8 @@ public class CinemaService {
     public void insertCinema(CinemaDto dto) {
         this.cinemaMybatisMapper.insertCinema(dto);
     }
+
+    public CinemaDto findById(Long id) {
+        return null;
+    }
 }

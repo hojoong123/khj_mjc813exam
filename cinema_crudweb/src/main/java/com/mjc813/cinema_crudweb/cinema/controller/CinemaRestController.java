@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -32,6 +29,27 @@ public class CinemaRestController {
                     new ResponseDto("insert error", 90000, dto)
             );
 
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDto> findById(@PathVariable Long id) {
+        try {
+            CinemaDto find = this.cinemaService.findById(id);
+            if ( find == null ) {
+                return ResponseEntity.status(610).body(
+                        new ResponseDto("not found", 49999, id)
+                );
+            } else {
+                return ResponseEntity.ok().body(
+                        new ResponseDto("suceess", 40010, find)
+                );
+            }
+        } catch (Throwable e) {
+            log.error(e.toString());
+            return ResponseEntity.ok().body(
+                    new ResponseDto("findById error", 90000, id)
+            );
         }
     }
 }

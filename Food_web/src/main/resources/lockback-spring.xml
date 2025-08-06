@@ -1,0 +1,30 @@
+<onMismatch>DENY</onMismatch>
+        </filter>
+<file>${LOG_PATH}/${ERR_LOG_FILE_NAME}.log</file>
+<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+<pattern>${LOG_PATTERN}</pattern>
+<charset>UTF-8</charset>
+</encoder>
+<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+<fileNamePattern>${LOG_PATH}/${ERR_LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log.zip</fileNamePattern>
+<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+    <maxFileSize>100MB</maxFileSize>
+</timeBasedFileNamingAndTriggeringPolicy>
+<maxHistory>31</maxHistory>
+</rollingPolicy>
+        </appender>
+
+<logger name="jdbc" level="OFF" additive="false" />
+<logger name="jdbc.sqlonly" level="OFF" additive="false" />
+<logger name="jdbc.sqltiming" level="${MYBATIS_LEVEL}" additive="false" />
+<logger name="jdbc.audit" level="OFF" additive="false" />
+<logger name="jdbc.resultset" level="OFF" additive="false" />
+<logger name="jdbc.resultsettable" level="${MYBATIS_LEVEL}" additive="false" />
+<logger name="jdbc.connection" level="OFF" additive="false" />
+
+<root level="${ROOT_LEVEL}" additive="true">
+<appender-ref ref="StandardConsole" />
+<appender-ref ref="RollingFile"/>
+<appender-ref ref="ErrorRollingFile"/>
+</root>
+        </configuration>

@@ -4,6 +4,9 @@ import org.mjc813.food_web.common.IIdName;
 import org.mjc813.food_web.food_category.dto.FoodCategoryDto;
 import org.mjc813.food_web.ingredient.dto.IIngredient;
 import org.mjc813.food_web.ingredient.dto.IngredientDto;
+import org.mjc813.food_web.ingredient_category.dto.IngredientCategoryDto;
+import org.mjc813.food_web.ingredient_category.dto.IngredientCategoryEntity;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -11,7 +14,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity(name = "FoodEntity")
+@Table(name = "food_tbl")
 public class FoodDto implements IFood {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Integer spicyLevel;
@@ -42,6 +49,29 @@ public class FoodDto implements IFood {
     }
 
     @Override
+    public Long getIngredientId() {
+        // Long ingredientId 값과 IngredientDto ingredientDto.getId() 값이 항상 같도록 get 하는 기능
+        this.setIngredientId(this.ingredientId);
+        return this.ingredientId;
+    }
+
+    @Override
+    public void setIngredientId(Long ingredientId) {
+        // Long ingredientId 값과 IngredientDto ingredientDto.getId() 값이 항상 같도록 set 하는 기능
+        if (ingredientId == null) {
+            if (this.ingredientDto != null && this.ingredientDto.getId() != null) {
+                this.ingredientId = this.ingredientDto.getId();
+            }
+            return;
+        }
+        this.ingredientId = ingredientId;
+        if (this.ingredientDto == null) {
+            this.ingredientDto = new IngredientDto();
+        }
+        this.ingredientDto.setId(ingredientId);
+    }
+
+    @Override
     public IIdName getFoodCategory() {
         return this.foodCategoryDto;
     }
@@ -55,5 +85,28 @@ public class FoodDto implements IFood {
             this.foodCategoryDto = new FoodCategoryDto();
         }
         this.foodCategoryDto.copyMembersIdName(iIdName);
+    }
+
+    @Override
+    public Long getFoodCategoryId() {
+        // Long foodCategoryId 값과 FoodCategoryDto foodCategoryDto.getId() 값이 항상 같도록 get 하는 기능
+        this.setFoodCategoryId(this.foodCategoryId);
+        return this.foodCategoryId;
+    }
+
+    @Override
+    public void setFoodCategoryId(Long foodCategoryId) {
+        // Long foodCategoryId 값과 FoodCategoryDto foodCategoryDto.getId() 값이 항상 같도록 set 하는 기능
+        if (foodCategoryId == null) {
+            if (this.foodCategoryDto != null && this.foodCategoryDto.getId() != null) {
+                this.foodCategoryId = this.foodCategoryDto.getId();
+            }
+            return;
+        }
+        this.foodCategoryId = ingredientId;
+        if (this.foodCategoryDto == null) {
+            this.foodCategoryDto = new FoodCategoryDto();
+        }
+        this.foodCategoryDto.setId(foodCategoryId);
     }
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mjc813.springbootwebprj.song.service.SongMybatisMapper">
+    <insert id="insert" parameterType="SongDto" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO song_tb (
+                              artist
+                            , composer
+                            , release_date
+                            , title
+                            , genre_id
+        ) VALUES (
+                   #{artist}
+                 , #{composer}
+                 , #{releaseDate}
+                 , #{title}
+                 , #{genreId}
+                 )
+    </insert>
+
+    <update id="update" parameterType="SongDto">
+        UPDATE song_tb SET
+        id = #{id}
+        <if test="artist != null">
+            , artist = #{artist}
+        </if>
+        <if test="composer != null">
+            , composer = #{composer}
+        </if>
+        <if test="releaseDate != null">
+            , release_date = #{releaseDate}
+        </if>
+        <if test="title != null and title != ''">
+            , title = #{title}
+        </if>
+        <if test="genreId != null and genreId >= 1">
+            , genre_id = #{genreId}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM song_tb
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="Long" resultType="SongDto">
+        SELECT
+            st.id
+             , st.artist
+             , st.composer
+             , st.release_date
+             , st.title
+             , st.genre_id
+             , gt.name as genre_name
+        FROM song_tb AS st
+                 INNER JOIN genre_tb AS gt ON st.genre_id = gt.id
+        WHERE st.id = #{id}
+    </select>
+
+    <select id="findByNameContainsAndArtistContains" resultType="SongDto" parameterType="org.springframework.data.domain.Pageable">
+        SELECT
+        st.id
+        , st.artist
+        , st.composer
+        , st.release_date
+        , st.title
+        , st.genre_id
+        , gt.name as genre_name
+        FROM song_tb AS st
+        INNER JOIN genre_tb AS gt ON st.genre_id = gt.id
+        <where>
+            1=1
+            <if test="title != null and title != ''">
+                AND st.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="artist != null and artist != ''">
+                AND st.artist LIKE CONCAT('%', #{artist}, '%')
+            </if>
+        </where>
+        <if test="pageable.sort != null and !pageable.sort.isEmpty()">
+            ORDER BY
+            <foreach collection="pageable.sort" item="item" separator=",">
+                ${item.property} ${item.direction}
+            </foreach>
+        </if>
+        LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}
+    </select>
+
+    <select id="countByNameContainsAndArtistContains" resultType="Long">
+        SELECT
+        count(*) as cnt
+        FROM song_tb AS st
+        <where>
+            1=1
+            <if test="title != null and title != ''">
+                AND st.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="artist != null and artist != ''">
+                AND st.artist LIKE CONCAT('%', #{artist}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

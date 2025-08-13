@@ -44,7 +44,7 @@ public class GenreRestController extends CommonRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<ResponseDto> update(@PathVariable("id") Long id, @RequestBody GenreDto dto) {
         try {
-            if ( dto.getId() == null && !id.equals(dto.getId()) ) {
+            if ( dto.getId() == null || !id.equals(dto.getId()) ) {
                 return getResponseEntity(ResponseEnumCode.REQUEST_ERROR, "ERROR", id);
             }
             IGenre igenre = this.genreService.update(dto);

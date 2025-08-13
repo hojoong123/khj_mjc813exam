@@ -3,14 +3,19 @@ package com.mjc813.springbootwebprj.song.controller;
 import com.mjc813.springbootwebprj.common.CommonRestController;
 import com.mjc813.springbootwebprj.common.ResponseDto;
 import com.mjc813.springbootwebprj.common.ResponseEnumCode;
+import com.mjc813.springbootwebprj.common.exception.MyDataNotFoundException;
+import com.mjc813.springbootwebprj.common.exception.MyRequestException;
+import com.mjc813.springbootwebprj.song.dto.ISong;
+import com.mjc813.springbootwebprj.song.dto.SongDto;
 import com.mjc813.springbootwebprj.song.dto.SongEntity;
-import com.mjc813.springbootwebprj.song.service.SongRepository;
+import com.mjc813.springbootwebprj.song.service.SongService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
 import java.util.Optional;
 
 
@@ -19,34 +24,32 @@ import java.util.Optional;
 @RequestMapping("/song")
 public class SongRestController extends CommonRestController {
     @Autowired
-    private SongRepository songRepository;
+    private SongService songService;
 
     @PostMapping("")
-    public ResponseEntity<ResponseDto> insert(@RequestBody SongEntity entity) {
+    public ResponseEntity<ResponseDto> insert(@Validated @RequestBody SongDto dto) {
         try {
-            this.songRepository.save(entity);
-            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", entity);
+            ISong isong = this.songService.insert(dto);
+            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", isong);
         } catch (Throwable e) {
-            return getResponseEntity(log, e, ResponseEnumCode.INSERT_ERROR, "ERROR", entity);
+            return getResponseEntity(log, e, ResponseEnumCode.INSERT_ERROR, "ERROR", dto);
         }
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ResponseDto> update(
             @PathVariable Long id
-            , @RequestBody SongEntity entity) {
+            , @Validated @RequestBody SongDto dto) {
         try {
-            if (entity.getId() == null && !id.equals(entity.getId())) {
+            if ( dto.getId() == null || !id.equals(dto.getId()) ) {
                 return getResponseEntity(ResponseEnumCode.REQUEST_ERROR, "ERROR", id);
             }
-            Optional<SongEntity> find = this.songRepository.findById(id);
-            if (find.isEmpty()) {
-                return getResponseEntity(ResponseEnumCode.DATA_NOTFOUND_ERROR, "ERROR", id);
-            } else {
-                entity.setId(id);
-                this.songRepository.save(entity);
-                return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", entity);
-            }
+            ISong iSong = this.songService.update(dto);
+            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", iSong);
+        } catch (MyRequestException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.REQUEST_ERROR, "ERROR", id);
+        } catch (MyDataNotFoundException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.DATA_NOTFOUND_ERROR, "ERROR", id);
         } catch (Throwable e) {
             log.error(e.toString());
             return getResponseEntity(log, e, ResponseEnumCode.UPDATE_ERROR, "ERROR", id);
@@ -56,13 +59,12 @@ public class SongRestController extends CommonRestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> delete(@PathVariable Long id) {
         try {
-            Optional<SongEntity> find = this.songRepository.findById(id);
-            if (find.isEmpty()) {
-                return getResponseEntity(ResponseEnumCode.DATA_NOTFOUND_ERROR, "ERROR", id);
-            } else {
-                this.songRepository.deleteById(id);
-                return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", id);
-            }
+            ISong find = this.songService.deleteById(id);
+            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", id);
+        } catch (MyRequestException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.REQUEST_ERROR, "ERROR", id);
+        } catch (MyDataNotFoundException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.DATA_NOTFOUND_ERROR, "ERROR", id);
         } catch (Throwable e) {
             log.error(e.toString());
             return getResponseEntity(log, e, ResponseEnumCode.DELETE_ERROR, "ERROR", id);
@@ -72,12 +74,12 @@ public class SongRestController extends CommonRestController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findById(@PathVariable Long id) {
         try {
-            Optional<SongEntity> find = this.songRepository.findById(id);
-            if (find.isEmpty()) {
-                return getResponseEntity(ResponseEnumCode.DATA_NOTFOUND_ERROR, "ERROR", null);
-            } else {
-                return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", find.get());
-            }
+            ISong find = this.songService.findById(id);
+            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", find);
+        } catch (MyRequestException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.REQUEST_ERROR, "ERROR", id);
+        } catch (MyDataNotFoundException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.DATA_NOTFOUND_ERROR, "ERROR", id);
         } catch (Throwable e) {
             log.error(e.toString());
             return getResponseEntity(log, e, ResponseEnumCode.SELECT_ERROR, "ERROR", id);
@@ -91,8 +93,10 @@ public class SongRestController extends CommonRestController {
             , Pageable pageable
     ) {
         try {
-            Page<SongEntity> list = this.songRepository.findByTitleContainsAndArtistContains(title, artist, pageable);
+            Page<ISong> list = this.songService.findByTitleContainsAndArtistContains(title, artist, pageable);
             return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", list);
+        } catch (MyRequestException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.REQUEST_ERROR, "ERROR", null);
         } catch (Throwable e) {
             log.error(e.toString());
             return getResponseEntity(log, e, ResponseEnumCode.SELECT_ERROR, "ERROR", null);

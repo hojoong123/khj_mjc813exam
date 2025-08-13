@@ -1,10 +1,19 @@
 package com.mjc813.springbootwebprj.genre.controller;
 
+import com.mjc813.springbootwebprj.common.CommonRestController;
+import com.mjc813.springbootwebprj.common.ResponseDto;
+import com.mjc813.springbootwebprj.common.ResponseEnumCode;
+import com.mjc813.springbootwebprj.common.exception.MyDataNotFoundException;
+import com.mjc813.springbootwebprj.common.exception.MyRequestException;
+import com.mjc813.springbootwebprj.genre.dto.GenreDto;
 import com.mjc813.springbootwebprj.genre.dto.GenreEntity;
+import com.mjc813.springbootwebprj.genre.dto.IGenre;
 import com.mjc813.springbootwebprj.genre.service.GenreRepository;
+import com.mjc813.springbootwebprj.genre.service.GenreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import jakarta.security.auth.message.callback.PrivateKeyCallback;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,66 +25,77 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequestMapping("/genre")
-public class GenreRestController {
+public class GenreRestController extends CommonRestController {
     @Autowired
     private GenreRepository genreRepository;
+    @Autowired
+    private GenreService genreService;
 
     @PostMapping("")
-    public ResponseEntity<GenreEntity> insert(@RequestBody GenreEntity entity) {
+    public ResponseEntity<ResponseDto> insert(@RequestBody GenreDto dto) {
         try {
-            this.genreRepository.save(entity);
-            return ResponseEntity.ok().body(entity);
+            IGenre igenre = this.genreService.insert(dto);
+            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", igenre);
         } catch (Throwable e) {
-            log.error(e.toString());
-            return ResponseEntity.status(500).body(entity);
+            return getResponseEntity(log, e, ResponseEnumCode.INSERT_ERROR, "ERROR", dto);
         }
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<GenreEntity> update(@RequestBody GenreEntity entity) {
+    public ResponseEntity<ResponseDto> update(@PathVariable("id") Long id, @RequestBody GenreDto dto) {
         try {
-            this.genreRepository.save(entity);
-            return ResponseEntity.ok().body(entity);
+            if ( dto.getId() == null && !id.equals(dto.getId()) ) {
+                return getResponseEntity(ResponseEnumCode.REQUEST_ERROR, "ERROR", id);
+            }
+            IGenre igenre = this.genreService.update(dto);
+            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", igenre);
+        } catch (MyRequestException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.REQUEST_ERROR, "ERROR", dto);
+        } catch (MyDataNotFoundException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.DATA_NOTFOUND_ERROR, "ERROR", dto);
         } catch (Throwable e) {
-            log.error(e.toString());
-            return ResponseEntity.status(500).body(entity);
+            return getResponseEntity(log, e, ResponseEnumCode.UPDATE_ERROR, "ERROR", dto);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> delete(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto> delete(@PathVariable Long id) {
         try {
-            this.genreRepository.deleteById(id);
-            return ResponseEntity.ok().body(id);
+            this.genreService.deleteById(id);
+            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", id);
+        } catch (MyRequestException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.REQUEST_ERROR, "ERROR", id);
+        } catch (MyDataNotFoundException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.DATA_NOTFOUND_ERROR, "ERROR", id);
         } catch (Throwable e) {
-            log.error(e.toString());
-            return ResponseEntity.status(500).body(id);
+            return getResponseEntity(log, e, ResponseEnumCode.DELETE_ERROR, "ERROR", id);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GenreEntity> findById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto> findById(@PathVariable Long id) {
         try {
-            Optional<GenreEntity> find = this.genreRepository.findById(id);
-            if (find.isPresent()) {
-                return ResponseEntity.ok().body(find.orElse(null));
-            } else {
-                return ResponseEntity.notFound().build();
-            }
+            IGenre iFind = this.genreService.findById(id);
+            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", iFind);
+        } catch (MyRequestException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.REQUEST_ERROR, "ERROR", id);
+        } catch (MyDataNotFoundException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.DATA_NOTFOUND_ERROR, "ERROR", id);
         } catch (Throwable e) {
-            log.error(e.toString());
-            return ResponseEntity.status(500).body(null);
+            return getResponseEntity(log, e, ResponseEnumCode.SELECT_ERROR, "ERROR", id);
         }
     }
 
     @GetMapping("")
-    public ResponseEntity<Page<GenreEntity>> findByNameContains(@RequestParam String name, Pageable pageable) {
+    public ResponseEntity<ResponseDto> findByNameContains(@RequestParam String name, Pageable pageable) {
         try {
             Page<GenreEntity> list = this.genreRepository.findByNameContains(name, pageable);
-            return ResponseEntity.ok().body(list);
+            return getResponseEntity(ResponseEnumCode.SUCCESS, "OK", list);
+        } catch (MyRequestException e) {
+            return getResponseEntity(log, e, ResponseEnumCode.REQUEST_ERROR, "ERROR", null);
         } catch (Throwable e) {
             log.error(e.toString());
-            return ResponseEntity.status(500).body(null);
+            return getResponseEntity(log, e, ResponseEnumCode.SELECT_ERROR, "ERROR", null);
         }
     }
 }

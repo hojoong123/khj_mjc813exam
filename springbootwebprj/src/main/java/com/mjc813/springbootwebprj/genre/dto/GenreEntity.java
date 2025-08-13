@@ -1,14 +1,16 @@
 package com.mjc813.springbootwebprj.genre.dto;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity(name = "GenreEntity")
 @Table(name = "genre_tb")
-public class GenreEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class GenreEntity implements IGenre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

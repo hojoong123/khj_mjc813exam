@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ResponseDto {
-    private Integer resultCode;
+    private ResponseEnumCode resultCode;
     private String message;
     private Object resultData;
 }

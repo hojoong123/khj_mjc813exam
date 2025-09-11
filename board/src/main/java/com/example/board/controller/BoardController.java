@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -143,28 +144,5 @@ public class BoardController {
         return "redirect:/";
     }
 
-    // 캘린더 페이지 뷰
-    @GetMapping("/calendar")
-    public String calendarPage() {
-        return "calendar";  // templates/calendar.html 을 반환
-    }
 
-    // 캘린더 데이터 JSON
-    @GetMapping("/calendar/events")
-    @ResponseBody
-    public List<Map<String, Object>> getEvents() {
-        List<Board> boards = repo.findAll();
-        List<Map<String, Object>> events = new ArrayList<>();
-
-        for (Board b : boards) {
-            Map<String, Object> event = new HashMap<>();
-            event.put("id", b.getId());
-            event.put("title", b.getTitle());
-            event.put("start", b.getEventDate().toString());
-            event.put("url", "/view/" + b.getId());
-            events.add(event);
-        }
-
-        return events;
-    }
 }

@@ -3,51 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>밴드 일정 캘린더</title>
-
-    <!-- FullCalendar 5.x CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
-
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+        /* 캘린더 컨테이너 크기 조정 */
         #calendar {
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 1200px;
+            margin: 50px auto; /* 상하 50px, 가운데 정렬 */
+        }
+
+        /* 고정 버튼 스타일 */
+        #backButton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #backButton:hover {
+            background-color: #2980b9;
         }
     </style>
 </head>
 <body>
-<h2>밴드 일정 캘린더</h2>
+<h1 style="text-align:center;">밴드 일정 캘린더</h1>
+
+<!-- 이전 페이지로 돌아가기 버튼 -->
+<button id="backButton" onclick="history.back()">홈으로 돌아가기</button>
 
 <div id="calendar"></div>
 
-<br>
-<a href="/">목록으로 돌아가기</a>
-
-<!-- FullCalendar 5.x JS -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
-
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            events: '/calendar/events', // BoardController에서 반환하는 JSON URL
-            eventClick: function(info) {
-                // 이벤트 클릭 시 상세보기 페이지로 이동
-                window.location.href = info.event.url;
-                info.jsEvent.preventDefault();
-            }
+            locale: 'ko',
+            height: 800,         // 전체 높이
+            contentHeight: 500,  // 내부 콘텐츠 높이
+            events: '/calendar/events'
         });
-
         calendar.render();
     });
 </script>

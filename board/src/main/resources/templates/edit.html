@@ -3,33 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>글 수정</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <h2>글 수정</h2>
 
 <form th:action="@{/edit/{id}(id=${board.id})}" th:object="${board}" method="post">
     <label>제목:</label>
-    <input type="text" th:field="*{title}" required><br><br>
+    <input type="text" th:field="*{title}" required>
 
     <label>작성자:</label>
-    <input type="text" th:field="*{writer}"><br><br>
+    <input type="text" th:field="*{writer}">
 
-    <label>내용:</label><br>
-    <textarea th:field="*{content}" rows="5" cols="50" required></textarea><br><br>
+    <label>내용:</label>
+    <textarea th:field="*{content}" rows="5" required></textarea>
 
     <label>날짜:</label>
-    <input type="date" th:field="*{eventDate}"><br><br>
+    <input type="date" th:field="*{eventDate}">
 
     <label>시간:</label>
-    <input type="time" th:field="*{eventTime}"><br><br>
+    <input type="time" th:field="*{eventTime}">
 
     <label>장소:</label>
-    <input type="text" th:field="*{location}"><br><br>
+    <input type="text" th:field="*{location}">
 
-    <button type="submit">수정 완료</button>
+    <div class="center">
+        <button type="submit" class="button">수정 완료</button>
+    </div>
 </form>
 
-<br>
-<a th:href="${field != null} ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})} : @{/(page=${currentPage})}">목록으로 돌아가기</a>
+<div class="center">
+    <a th:href="${field != null} ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})} : @{/(page=${currentPage})}"
+       class="button back-link">목록으로 돌아가기</a>
+</div>
+
 </body>
 </html>

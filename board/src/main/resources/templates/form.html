@@ -2,34 +2,111 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>글 작성</title>
+    <title>새 글 작성</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="date"], input[type="time"], textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .button {
+            display: inline-block;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 10px 5px 0 0;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .secondary {
+            background-color: #2196F3;
+        }
+
+        .secondary:hover {
+            background-color: #1976D2;
+        }
+
+        .center {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<h2>새 글 작성</h2>
+<div class="container">
+    <h2>새 글 작성</h2>
 
-<form th:action="@{/new}" th:object="${board}" method="post">
-    <label>제목:</label>
-    <input type="text" th:field="*{title}" required><br><br>
+    <form th:action="@{/new}" th:object="${board}" method="post">
+        <label>제목:</label>
+        <input type="text" th:field="*{title}" required>
 
-    <label>작성자:</label>
-    <input type="text" th:field="*{writer}"><br><br>
+        <label>작성자:</label>
+        <input type="text" th:field="*{writer}">
 
-    <label>내용:</label><br>
-    <textarea th:field="*{content}" rows="5" cols="50" required></textarea><br><br>
+        <label>내용:</label>
+        <textarea th:field="*{content}" rows="5" required></textarea>
 
-    <label>날짜:</label>
-    <input type="date" th:field="*{eventDate}"><br><br>
+        <label>날짜:</label>
+        <input type="date" th:field="*{eventDate}">
 
-    <label>시간:</label>
-    <input type="time" th:field="*{eventTime}"><br><br>
+        <label>시간:</label>
+        <input type="time" th:field="*{eventTime}">
 
-    <label>장소:</label>
-    <input type="text" th:field="*{location}"><br><br>
+        <label>장소:</label>
+        <input type="text" th:field="*{location}">
 
-    <button type="submit">등록</button>
-</form>
-
-<br>
-<a th:href="${field != null} ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})} : @{/(page=${currentPage})}">목록으로 돌아가기</a>
+        <div class="center">
+            <button type="submit" class="button">등록</button>
+            <a th:href="${field != null} ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})} : @{/(page=${currentPage})}"
+               class="button secondary">목록으로 돌아가기</a>
+        </div>
+    </form>
+</div>
 </body>
 </html>

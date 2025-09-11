@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>글 상세보기</title>
+</head>
+<body>
+<h2 th:text="${board.title}">글 제목</h2>
+
+<p><strong>작성자:</strong> <span th:text="${board.writer}"></span></p>
+<p><strong>내용:</strong></p>
+<p th:text="${board.content}"></p>
+
+<p><strong>날짜:</strong> <span th:text="${board.eventDate}"></span></p>
+<p><strong>시간:</strong> <span th:text="${board.eventTime}"></span></p>
+<p><strong>장소:</strong> <span th:text="${board.location}"></span></p>
+<p><strong>작성일:</strong> <span th:text="${#temporals.format(board.createdAt,'yyyy-MM-dd HH:mm')}"></span></p>
+
+<br>
+<a th:href="${field != null} ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})} : @{/(page=${currentPage})}">목록으로 돌아가기</a>
+</body>
+</html>

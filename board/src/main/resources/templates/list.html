@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>밴드 일정 관리</title>
+</head>
+<body>
+<h2>밴드 일정 관리</h2>
+
+<!-- 검색 폼 -->
+<form th:action="@{/search}" method="get">
+    <select name="field">
+        <option value="title" th:selected="${field == 'title'}">제목</option>
+        <option value="writer" th:selected="${field == 'writer'}">작성자</option>
+        <option value="location" th:selected="${field == 'location'}">장소</option>
+    </select>
+    <input type="text" name="keyword" placeholder="검색어 입력" th:value="${keyword}">
+    <button type="submit">검색</button>
+</form>
+
+<!-- 날짜 범위 검색 -->
+<form th:action="@{/searchByDate}" method="get">
+    <label>시작 날짜:</label>
+    <input type="date" name="startDate" th:value="${startDate}">
+    <label>끝 날짜:</label>
+    <input type="date" name="endDate" th:value="${endDate}">
+    <button type="submit">검색</button>
+</form>
+
+<br>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <th>ID</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>날짜</th>
+        <th>시간</th>
+        <th>장소</th>
+        <th>작성일</th>
+        <th>조회</th>
+        <th>삭제</th>
+        <th>수정</th>
+    </tr>
+    <tr th:each="b : ${boards}">
+        <td th:text="${b.id}"></td>
+        <td th:text="${b.title}"></td>
+        <td th:text="${b.writer}"></td>
+        <td th:text="${b.eventDate}"></td>
+        <td th:text="${b.eventTime}"></td>
+        <td th:text="${b.location}"></td>
+        <td th:text="${#temporals.format(b.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+        <td><a th:href="@{/view/{id}(id=${b.id})}">조회</a></td>
+        <td><a th:href="@{/delete/{id}(id=${b.id})}">삭제</a></td>
+        <td><a th:href="@{/edit/{id}(id=${b.id})}">수정</a></td>
+    </tr>
+</table>
+
+<br>
+
+<!-- 페이지네이션 -->
+<div>
+    <span th:if="${currentPage > 0}">
+        <a th:if="${startDate != null}"
+           th:href="@{/searchByDate(page=${currentPage-1}, startDate=${startDate}, endDate=${endDate})}">이전</a>
+        <a th:if="${startDate == null and field != null}"
+           th:href="@{/search(page=${currentPage-1}, field=${field}, keyword=${keyword})}">이전</a>
+        <a th:if="${startDate == null and field == null}"
+           th:href="@{/(page=${currentPage-1})}">이전</a>
+    </span>
+
+    <span th:text="'페이지 ' + ${currentPage + 1} + ' / ' + ${totalPages}"></span>
+
+    <span th:if="${currentPage + 1 < totalPages}">
+        <a th:if="${startDate != null}"
+           th:href="@{/searchByDate(page=${currentPage+1}, startDate=${startDate}, endDate=${endDate})}">다음</a>
+        <a th:if="${startDate == null and field != null}"
+           th:href="@{/search(page=${currentPage+1}, field=${field}, keyword=${keyword})}">다음</a>
+        <a th:if="${startDate == null and field == null}"
+           th:href="@{/(page=${currentPage+1})}">다음</a>
+    </span>
+</div>
+
+<br>
+
+<!-- 새 글 작성 & 캘린더 버튼 -->
+<a href="/new">새 글 작성</a> |
+<a href="/calendar">캘린더 보기</a>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 작성</title>
+</head>
+<body>
+<h2>새 글 작성</h2>
+
+<form th:action="@{/new}" th:object="${board}" method="post">
+    <label>제목:</label>
+    <input type="text" th:field="*{title}" required><br><br>
+
+    <label>작성자:</label>
+    <input type="text" th:field="*{writer}"><br><br>
+
+    <label>내용:</label><br>
+    <textarea th:field="*{content}" rows="5" cols="50" required></textarea><br><br>
+
+    <label>날짜:</label>
+    <input type="date" th:field="*{eventDate}"><br><br>
+
+    <label>시간:</label>
+    <input type="time" th:field="*{eventTime}"><br><br>
+
+    <label>장소:</label>
+    <input type="text" th:field="*{location}"><br><br>
+
+    <button type="submit">등록</button>
+</form>
+
+<br>
+<a th:href="${field != null} ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})} : @{/(page=${currentPage})}">목록으로 돌아가기</a>
+</body>
+</html>

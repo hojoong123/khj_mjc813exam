@@ -17,7 +17,6 @@
 
         /* 버튼 공통 스타일 */
         .button {
-            background-color: #4CAF50;
             color: white;
             padding: 8px 16px;
             margin: 5px;
@@ -30,9 +29,26 @@
             display: inline-block;
         }
 
-        .button:hover {
+        /* 버튼 색상별 스타일 */
+        .button-view {
+            background-color: #4CAF50; /* 초록색 */
+        }
+        .button-view:hover {
             background-color: #45a049;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-edit {
+            background-color: #008CBA; /* 파란색 */
+        }
+        .button-edit:hover {
+            background-color: #007bb5;
+        }
+
+        .button-delete {
+            background-color: #f44336; /* 빨간색 */
+        }
+        .button-delete:hover {
+            background-color: #da190b;
         }
 
         /* 페이지네이션 버튼 */
@@ -91,7 +107,7 @@
         <option value="location" th:selected="${field == 'location'}">장소</option>
     </select>
     <input type="text" name="keyword" placeholder="검색어 입력" th:value="${keyword}">
-    <button type="submit" class="button">검색</button>
+    <button type="submit" class="button button-view">검색</button>
 </form>
 
 <!-- 날짜 범위 검색 -->
@@ -100,7 +116,7 @@
     <input type="date" name="startDate" th:value="${startDate}">
     <label>끝 날짜:</label>
     <input type="date" name="endDate" th:value="${endDate}">
-    <button type="submit" class="button">검색</button>
+    <button type="submit" class="button button-view">검색</button>
 </form>
 
 <table>
@@ -113,8 +129,8 @@
         <th>장소</th>
         <th>작성일</th>
         <th>조회</th>
-        <th>삭제</th>
         <th>수정</th>
+        <th>삭제</th>
     </tr>
     <tr th:each="b : ${boards}">
         <td th:text="${b.id}"></td>
@@ -124,9 +140,9 @@
         <td th:text="${b.eventTime}"></td>
         <td th:text="${b.location}"></td>
         <td th:text="${#temporals.format(b.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-        <td><a th:href="@{/view/{id}(id=${b.id})}" class="button">조회</a></td>
-        <td><a th:href="@{/delete/{id}(id=${b.id})}" class="button">삭제</a></td>
-        <td><a th:href="@{/edit/{id}(id=${b.id})}" class="button">수정</a></td>
+        <td><a th:href="@{/view/{id}(id=${b.id})}" class="button button-view">조회</a></td>
+        <td><a th:href="@{/edit/{id}(id=${b.id})}" class="button button-edit">수정</a></td>
+        <td><a th:href="@{/delete/{id}(id=${b.id})}" class="button button-delete">삭제</a></td>
     </tr>
 </table>
 
@@ -155,8 +171,8 @@
 
 <!-- 새 글 작성 & 캘린더 버튼 -->
 <div style="text-align:center; margin-top:15px;">
-    <a href="/new" class="button">새 글 작성</a>
-    <a href="/calendar" class="button">캘린더 보기</a>
+    <a href="/new" class="button button-view">새 글 작성</a>
+    <a href="/calendar" class="button button-view">캘린더 보기</a>
 </div>
 
 </body>

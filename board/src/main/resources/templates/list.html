@@ -15,40 +15,33 @@
             margin-bottom: 20px;
         }
 
-        /* 버튼 공통 스타일 */
-        .button {
-            color: white;
-            padding: 8px 16px;
-            margin: 5px;
-            border: none;
-            border-radius: 8px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* 행 클릭 가능 표시 */
+        tr.clickable-row {
             cursor: pointer;
-            font-size: 14px;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
+            transition: background-color 0.2s;
         }
 
-        /* 버튼 색상별 스타일 */
-        .button-view {
-            background-color: #4CAF50; /* 초록색 */
-        }
-        .button-view:hover {
-            background-color: #45a049;
-        }
-
-        .button-edit {
-            background-color: #008CBA; /* 파란색 */
-        }
-        .button-edit:hover {
-            background-color: #007bb5;
-        }
-
-        .button-delete {
-            background-color: #f44336; /* 빨간색 */
-        }
-        .button-delete:hover {
-            background-color: #da190b;
+        tr.clickable-row:hover {
+            background-color: #f9f9f9;
         }
 
         /* 페이지네이션 버튼 */
@@ -65,35 +58,6 @@
         .pagination a:hover {
             background-color: #007bb5;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        form {
-            margin-bottom: 10px;
-        }
-
-        .form-inline input, .form-inline select, .form-inline button {
-            margin-right: 5px;
-            padding: 5px;
-            font-size: 14px;
-        }
     </style>
 </head>
 <body>
@@ -107,7 +71,7 @@
         <option value="location" th:selected="${field == 'location'}">장소</option>
     </select>
     <input type="text" name="keyword" placeholder="검색어 입력" th:value="${keyword}">
-    <button type="submit" class="button button-view">검색</button>
+    <button type="submit">검색</button>
 </form>
 
 <!-- 날짜 범위 검색 -->
@@ -116,7 +80,7 @@
     <input type="date" name="startDate" th:value="${startDate}">
     <label>끝 날짜:</label>
     <input type="date" name="endDate" th:value="${endDate}">
-    <button type="submit" class="button button-view">검색</button>
+    <button type="submit">검색</button>
 </form>
 
 <table>
@@ -128,11 +92,10 @@
         <th>시간</th>
         <th>장소</th>
         <th>작성일</th>
-        <th>조회</th>
-        <th>수정</th>
-        <th>삭제</th>
     </tr>
-    <tr th:each="b : ${boards}">
+    <tr th:each="b : ${boards}"
+        class="clickable-row"
+        th:onclick="|window.location.href='@{/view/{id}(id=${b.id})}'|">
         <td th:text="${b.id}"></td>
         <td th:text="${b.title}"></td>
         <td th:text="${b.writer}"></td>
@@ -140,9 +103,6 @@
         <td th:text="${b.eventTime}"></td>
         <td th:text="${b.location}"></td>
         <td th:text="${#temporals.format(b.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-        <td><a th:href="@{/view/{id}(id=${b.id})}" class="button button-view">조회</a></td>
-        <td><a th:href="@{/edit/{id}(id=${b.id})}" class="button button-edit">수정</a></td>
-        <td><a th:href="@{/delete/{id}(id=${b.id})}" class="button button-delete">삭제</a></td>
     </tr>
 </table>
 
@@ -171,8 +131,8 @@
 
 <!-- 새 글 작성 & 캘린더 버튼 -->
 <div style="text-align:center; margin-top:15px;">
-    <a href="/new" class="button button-view">새 글 작성</a>
-    <a href="/calendar" class="button button-view">캘린더 보기</a>
+    <a href="/new">새 글 작성</a>
+    <a href="/calendar">캘린더 보기</a>
 </div>
 
 </body>

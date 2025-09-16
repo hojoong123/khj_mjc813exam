@@ -108,8 +108,10 @@
 </form>
 
 <div class="center">
-    <a th:href="${field != null} ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})} : @{/(page=${currentPage})}"
-       class="button back-link">목록으로 돌아가기</a>
+    <a th:href="${field != null}
+             ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})}
+             : @{/list(page=${currentPage})}"
+       class="button secondary">목록으로 돌아가기</a>
 </div>
 
 </body>

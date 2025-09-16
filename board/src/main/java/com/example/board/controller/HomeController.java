@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/home")  // '/' → '/home'으로 변경
     public String home() {
-        return "home";
+        return "index";
     }
 }

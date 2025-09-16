@@ -9,8 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
 
 @Controller
 public class BoardController {
@@ -21,8 +20,26 @@ public class BoardController {
         this.repo = repo;
     }
 
-    // 기본 목록 + 페이지네이션
-    @GetMapping("/")
+    // ----------------------
+    // 메인 홈 화면
+    // ----------------------
+    @GetMapping("/index")
+    public String home() {
+        return "index"; // index.html
+    }
+
+    // ----------------------
+    // 밴드 소개 페이지
+    // ----------------------
+    @GetMapping("/intro")
+    public String bandIntro() {
+        return "intro"; // bandIntro.html
+    }
+
+    // ----------------------
+    // 일정 관리 게시판
+    // ----------------------
+    @GetMapping("/list")
     public String list(@RequestParam(value = "page", defaultValue = "0") int page,
                        Model model) {
         Pageable pageable = PageRequest.of(page, 10, Sort.by("eventDate").descending());
@@ -31,104 +48,95 @@ public class BoardController {
         model.addAttribute("boards", boards.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", boards.getTotalPages());
-        return "list";
+        return "list"; // list.html
     }
 
-    // 검색 (제목, 작성자, 장소)
+    // ----------------------
+    // 검색: 제목, 작성자, 장소
+    // ----------------------
     @GetMapping("/search")
-    public String search(@RequestParam("field") String field,
-                         @RequestParam("keyword") String keyword,
+    public String search(@RequestParam String field,
+                         @RequestParam String keyword,
                          @RequestParam(value = "page", defaultValue = "0") int page,
                          Model model) {
-
-        List<Board> results;
-        switch (field) {
-            case "title":
-                results = repo.findByTitleContaining(keyword);
-                break;
-            case "writer":
-                results = repo.findByWriterContaining(keyword);
-                break;
-            case "location":
-                results = repo.findByLocationContaining(keyword);
-                break;
-            default:
-                results = repo.findAll();
-        }
-
-        // 페이지네이션 수동 처리
-        int pageSize = 10;
-        int start = page * pageSize;
-        int end = Math.min(start + pageSize, results.size());
-        List<Board> pagedResults = results.subList(start, end);
-        int totalPages = (int) Math.ceil((double) results.size() / pageSize);
-
-        model.addAttribute("boards", pagedResults);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("field", field);
-        model.addAttribute("keyword", keyword);
-        return "list";
-    }
-
-    // 날짜 범위 검색 + 페이지네이션
-    @GetMapping("/searchByDate")
-    public String searchByDate(
-            @RequestParam(value = "startDate", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(value = "endDate", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            Model model) {
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by("eventDate").descending());
         Page<Board> boards;
 
-        if (startDate != null && endDate != null) {
-            boards = repo.findByEventDateBetween(startDate, endDate, pageable);
-        } else {
-            boards = repo.findAll(pageable);
+        switch (field) {
+            case "title":
+                boards = repo.findByTitleContainingIgnoreCase(keyword, pageable);
+                break;
+            case "writer":
+                boards = repo.findByWriterContainingIgnoreCase(keyword, pageable);
+                break;
+            case "location":
+                boards = repo.findByLocationContainingIgnoreCase(keyword, pageable);
+                break;
+            default:
+                boards = repo.findAll(pageable);
         }
+
+        model.addAttribute("boards", boards.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", boards.getTotalPages());
+        model.addAttribute("field", field);
+        model.addAttribute("keyword", keyword);
+
+        return "list"; // list.html
+    }
+
+    // ----------------------
+    // 날짜 범위 검색
+    // ----------------------
+    @GetMapping("/searchByDate")
+    public String searchByDate(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            Model model) {
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("eventDate").descending());
+        Page<Board> boards = repo.findByEventDateBetween(startDate, endDate, pageable);
 
         model.addAttribute("boards", boards.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", boards.getTotalPages());
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
-        return "list";
-    }
 
+        return "list"; // list.html
+    }
+    // 검색 / 날짜 범위 검색 등은 기존 BoardController 코드 그대로 사용
+    // ...
+
+    // ----------------------
     // CRUD: 작성, 조회, 수정, 삭제
+    // ----------------------
     @GetMapping("/new")
     public String form(Model model) {
         model.addAttribute("board", new Board());
-        return "form";
+        return "form"; // form.html
     }
 
     @PostMapping("/new")
     public String add(Board board) {
         repo.save(board);
-        return "redirect:/";
+        return "redirect:/list";
     }
 
     @GetMapping("/view/{id}")
     public String view(@PathVariable Long id, Model model) {
         Board board = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ID"));
         model.addAttribute("board", board);
-        return "view";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        repo.deleteById(id);
-        return "redirect:/";
+        return "view"; // view.html
     }
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         Board board = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
         model.addAttribute("board", board);
-        return "edit";
+        return "edit"; // edit.html
     }
 
     @PostMapping("/edit/{id}")
@@ -141,8 +149,21 @@ public class BoardController {
         board.setEventTime(updatedBoard.getEventTime());
         board.setLocation(updatedBoard.getLocation());
         repo.save(board);
-        return "redirect:/";
+        return "redirect:/list";
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        repo.deleteById(id);
+        return "redirect:/list";
+    }
+
+    // ----------------------
+    // 캘린더 페이지
+    // ----------------------
+    @GetMapping("/calendar")
+    public String calendar() {
+        return "calendar"; // calendar.html
+    }
 
 }

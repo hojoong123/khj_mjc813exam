@@ -15,6 +15,12 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     // 날짜 범위 검색 + 페이지네이션
     Page<Board> findByEventDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
+
+    Page<Board> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
+
+    Page<Board> findByWriterContainingIgnoreCase(String keyword, Pageable pageable);
+
+    Page<Board> findByLocationContainingIgnoreCase(String keyword, Pageable pageable);
 }
 
 

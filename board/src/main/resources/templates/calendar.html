@@ -6,10 +6,30 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
     <style>
-        /* 캘린더 컨테이너 크기 조정 */
+        /* 전체 배경 이미지 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('/images/background.jpg') no-repeat center center;
+            background-size: cover;
+            background-attachment: scroll; /* 스크롤할 때 배경이 같이 움직임 */
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+        }
+
+        /* 캘린더 컨테이너 */
         #calendar {
             max-width: 1200px;
-            margin: 50px auto; /* 상하 50px, 가운데 정렬 */
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.9); /* 캘린더 가독성을 위한 반투명 배경 */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         /* 고정 버튼 스타일 */
@@ -33,7 +53,7 @@
     </style>
 </head>
 <body>
-<h1 style="text-align:center;">밴드 일정 캘린더</h1>
+<h1>밴드 일정 캘린더</h1>
 
 <!-- 이전 페이지로 돌아가기 버튼 -->
 <button id="backButton" onclick="history.back()">홈으로 돌아가기</button>
@@ -46,8 +66,8 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'ko',
-            height: 800,         // 전체 높이
-            contentHeight: 500,  // 내부 콘텐츠 높이
+            height: 800,
+            contentHeight: 500,
             events: '/calendar/events'
         });
         calendar.render();

@@ -17,10 +17,7 @@ public class CalendarController {
     @Autowired
     private BoardRepository boardRepository;
 
-    @GetMapping("/calendar")
-    public String calendarPage() {
-        return "calendar";
-    }
+
 
     @GetMapping("/calendar/events")
     @ResponseBody

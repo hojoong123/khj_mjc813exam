@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>작당모의 메인 홈</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+
+            /* 배경 이미지 */
+            background-image: url('/images/background.jpg');
+            background-size: cover;       /* 화면 꽉 채우기 */
+            background-position: center;  /* 중앙 정렬 */
+            background-repeat: no-repeat; /* 반복 없음 */
+            min-height: 100vh;            /* 화면 최소 높이 */
+            color: white;
+        }
+
+        header {
+            background-color: rgba(0,0,0,0.6); /* 반투명 검정 */
+            color: white;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            position: sticky;  /* 스크롤해도 헤더 고정 */
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            margin: 80px auto;
+            background-color: rgba(0,0,0,0.5); /* 반투명 박스 */
+            padding: 30px;
+            border-radius: 12px;
+            display: inline-block;
+            max-width: 600px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 15px;
+            font-size: 18px;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        /* 버튼 색상 개별 지정 */
+        .intro-btn { background-color: #2196F3; }    /* 파란색 */
+        .board-btn { background-color: #FF9800; }    /* 주황색 */
+        .calendar-btn { background-color: #9C27B0; } /* 보라색 */
+
+        .intro-btn:hover { background-color: #1976D2; }
+        .board-btn:hover { background-color: #e68900; }
+        .calendar-btn:hover { background-color: #7B1FA2; }
+
+        .button:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        /* 스크롤 테스트용 (삭제 가능) */
+        .spacer {
+            height: 150vh; /* 페이지를 길게 만들어 스크롤 확인 */
+        }
+    </style>
+</head>
+<body>
+<header>
+    작당모의
+</header>
+
+<div class="container">
+    <h2>작당모의에 오신 것을 환영합니다!!</h2>
+    <p>원하는 메뉴를 선택하세요</p>
+
+    <a href="/intro" class="button intro-btn">밴드 소개</a>
+    <a href="/list" class="button board-btn">일정 관리 게시판</a>
+    <a href="/calendar" class="button calendar-btn">캘린더</a>
+</div>
+
+<div class="spacer"></div>
+</body>
+</html>

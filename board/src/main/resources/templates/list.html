@@ -6,19 +6,24 @@
 
     <style>
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background: url('/images/background.jpg') no-repeat center center;
+            background-size: cover;
+            background-attachment: scroll; /* 스크롤할 때 배경이 같이 내려감 */
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin: 20px 0;
+            color: white; /* 배경 위에서 가독성 좋게 */
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.9); /* 표 가독성 위해 반투명 배경 */
         }
 
         table, th, td {
@@ -58,13 +63,33 @@
         .pagination a:hover {
             background-color: #007bb5;
         }
+
+        /* 하단 버튼 스타일 */
+        .bottom-buttons a {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 0 5px;
+            font-size: 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .new-btn { background-color: #4CAF50; }    /* 초록색 */
+        .calendar-btn { background-color: #9C27B0; } /* 보라색 */
+        .home-btn { background-color: #2196F3; }   /* 파란색 */
+
+        .new-btn:hover { background-color: #45a049; }
+        .calendar-btn:hover { background-color: #7B1FA2; }
+        .home-btn:hover { background-color: #1976D2; }
     </style>
 </head>
 <body>
 <h2>밴드 일정 관리</h2>
 
 <!-- 검색 폼 -->
-<form class="form-inline" th:action="@{/search}" method="get">
+<form class="form-inline" th:action="@{/search}" method="get" style="text-align:center; margin-bottom:15px;">
     <select name="field">
         <option value="title" th:selected="${field == 'title'}">제목</option>
         <option value="writer" th:selected="${field == 'writer'}">작성자</option>
@@ -75,7 +100,7 @@
 </form>
 
 <!-- 날짜 범위 검색 -->
-<form class="form-inline" th:action="@{/searchByDate}" method="get">
+<form class="form-inline" th:action="@{/searchByDate}" method="get" style="text-align:center; margin-bottom:15px;">
     <label>시작 날짜:</label>
     <input type="date" name="startDate" th:value="${startDate}">
     <label>끝 날짜:</label>
@@ -114,7 +139,7 @@
         <a th:if="${startDate == null and field != null}"
            th:href="@{/search(page=${currentPage - 1}, field=${field}, keyword=${keyword})}">이전</a>
         <a th:if="${startDate == null and field == null}"
-           th:href="@{/(page=${currentPage - 1})}">이전</a>
+           th:href="@{/list(page=${currentPage - 1})}">이전</a>
     </span>
 
     <span th:text="'페이지 ' + ${currentPage + 1} + ' / ' + ${totalPages}"></span>
@@ -125,14 +150,15 @@
         <a th:if="${startDate == null and field != null}"
            th:href="@{/search(page=${currentPage+1}, field=${field}, keyword=${keyword})}">다음</a>
         <a th:if="${startDate == null and field == null}"
-           th:href="@{/(page=${currentPage+1})}">다음</a>
+           th:href="@{/list(page=${currentPage+1})}">다음</a>
     </span>
 </div>
 
-<!-- 새 글 작성 & 캘린더 버튼 -->
-<div style="text-align:center; margin-top:15px;">
-    <a href="/new">새 글 작성</a>
-    <a href="/calendar">캘린더 보기</a>
+<!-- 하단 버튼들 -->
+<div class="bottom-buttons" style="text-align:center; margin-top:15px;">
+    <a href="/new" class="new-btn">새 글 작성</a>
+    <a href="/calendar" class="calendar-btn">캘린더 보기</a>
+    <a href="/" class="home-btn">메인 홈</a>
 </div>
 
 </body>

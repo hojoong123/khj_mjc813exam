@@ -99,7 +99,9 @@
 
   <div class="center">
     <!-- 목록으로 돌아가기 -->
-    <a th:href="${field != null} ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})} : @{/(page=${currentPage})}"
+    <a th:href="${field != null}
+             ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})}
+             : @{/list(page=${currentPage})}"
        class="button secondary">목록으로 돌아가기</a>
 
     <!-- 수정 -->

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>밴드 소개</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+
+      /* 배경 이미지 */
+      background-image: url('/images/background.jpg');
+      background-size: cover;       /* 화면 꽉 채우기 */
+      background-position: center;  /* 중앙 정렬 */
+      background-repeat: no-repeat; /* 반복 없음 */
+      min-height: 100vh;            /* 최소 높이 */
+      color: white;
+    }
+
+    header {
+      background-color: rgba(0,0,0,0.6); /* 반투명 검정 */
+      color: white;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .container {
+      margin: 60px auto;
+      max-width: 800px;
+      padding: 30px;
+      background-color: rgba(0,0,0,0.6); /* 반투명 배경 */
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    img {
+      width: 300px;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      color: white;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+<header>
+  밴드 소개
+</header>
+
+<div class="container">
+  <img src="https://via.placeholder.com/300x200.png?text=Band+Image" alt="밴드 이미지">
+
+  <h2>작당모의 밴드</h2>
+  <p>
+    안녕하세요! 저희는 <strong>작당모의 밴드</strong>입니다. 🎶
+    다양한 장르의 음악을 연주하며, 즐거운 분위기 속에서 함께 소통하는 밴드입니다.
+    공연, 연습, 합주를 통해 더 멋진 무대를 만들고 있습니다.
+  </p>
+
+  <a href="/" class="button">메인 홈으로 돌아가기</a>
+</div>
+</body>
+</html>

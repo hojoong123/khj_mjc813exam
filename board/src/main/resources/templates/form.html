@@ -103,7 +103,9 @@
 
         <div class="center">
             <button type="submit" class="button">등록</button>
-            <a th:href="${field != null} ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})} : @{/(page=${currentPage})}"
+            <a th:href="${field != null}
+             ? @{/search(page=${currentPage}, field=${field}, keyword=${keyword})}
+             : @{/list(page=${currentPage})}"
                class="button secondary">목록으로 돌아가기</a>
         </div>
     </form>
